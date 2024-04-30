@@ -1,5 +1,6 @@
 package CNJV.lab10.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -31,26 +32,25 @@ public class Oder {
 
     private int pay; //0 chuyen khoan, 1 tien mat
 
-    @JsonManagedReference
-    @OneToMany (mappedBy = "pk.oder", cascade = {CascadeType.REMOVE})
-    @Valid
-    @JsonIgnore
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "oder_id", referencedColumnName = "id")
+    private Oder oder;
 
-    private List<OderProduct> oderProducts = new ArrayList<OderProduct>();
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "client_id", referencedColumnName = "id")
+    private Client client;
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "staff_id", referencedColumnName = "id")
+    private Staff staff;
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    private Product product;
 
     @Transient
-    public Double getTotalOrderPrice() {
-        double sum = 0D;
-        List<OderProduct> oderProducts = getOderProducts();
-        for (OderProduct op : oderProducts) {
-            sum += op.getTotalPrice();
-        }
-        return sum;
-    }
-
-    @Transient
-    public int getNumberOfProducts() {
-        return this.oderProducts.size();
+    public Double getMoney() {
+        return 0.1 * product.getPrice();
     }
 
     @Builder

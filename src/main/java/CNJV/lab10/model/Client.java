@@ -1,9 +1,7 @@
 package CNJV.lab10.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,10 +19,20 @@ public class Client {
     private String phone;
     private String email;
 
+    @JsonIgnore
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "users_username", referencedColumnName = "username")
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
     @Builder
-    public Client(String name, String phone, String email) {
+    public Client(String name, String phone, String email, User user) {
         this.name =  name;
         this.phone = phone;
         this.email = email;
+        this.user =user;
     }
 }

@@ -1,7 +1,7 @@
-Bất động sản: //xong
+Bất động sản:
 -id 
 - tên
-- tình trạng : 1 là thuê, 2 bán
+- tình trạng : 0 là thuê, 1 bán
 - mét vuông
 - quốc gia
 - địa chỉ
@@ -10,20 +10,33 @@ Bất động sản: //xong
 - khóa ngoại id người bán
 
 tài khoản : // xong
--id
 -username
 - password
-- chức vụ: 1 admin, 2 nhân viên, 3 khách hàng
+- chức vụ: 0 admin, 1 nhân viên, 2 khách hàng
+-id
 - tên
 - số điện thoại
 - email
+
+khách hàng: : // xong
+-id
+- tên
+- số điện thoại
+- email
+
+nhan vien: : // xong
+- id
+- tên
+- số điện thoại
+- email
+- chức vụ 1 là admin 2 là nhân viên
 
 Giao dịch
 - Id giao dịch
 - ngày tạo
 - số tiền
 -tình trạng; chưa xủ lí, đang xử lí, đã xử lí
-- thanh toán: chuyển khoản, tiền mặt
+- thanh toán: 0 chuyển khoản, 1 tiền mặt
 
 Chi tiết giao dịch:
 -id giao dịch
