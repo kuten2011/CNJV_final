@@ -2,7 +2,6 @@ package CNJV.lab10.Service;
 
 import CNJV.lab10.Repository.ProductRepository;
 import CNJV.lab10.model.Product;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

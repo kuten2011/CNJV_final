@@ -29,13 +29,23 @@ public class User implements UserDetails {
 
     private String password;
 
+    private String name;
+    private String phone;
+    private String email;
+
+    @Column(nullable = false)
+    private int position;
+
     private Boolean enabled;
 
     @Builder
-    public User(Long id, String username, String password, Boolean enabled) {
-        this.id = id;
+    public User(String username, String password, String name, String phone, String email, int position, Boolean enabled) {
         this.username = username;
         this.password = password;
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.position = position;
         this.enabled = enabled;
     }
 

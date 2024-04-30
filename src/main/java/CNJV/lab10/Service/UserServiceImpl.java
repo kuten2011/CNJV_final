@@ -1,15 +1,12 @@
 package CNJV.lab10.Service;
 
+import CNJV.lab10.Repository.UserRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import CNJV.lab10.model.User;
-import CNJV.lab10.Repository.UserRepository;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 

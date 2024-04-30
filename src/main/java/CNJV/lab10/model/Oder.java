@@ -29,6 +29,8 @@ public class Oder {
 
     private OderStatus status;
 
+    private int pay; //0 chuyen khoan, 1 tien mat
+
     @JsonManagedReference
     @OneToMany (mappedBy = "pk.oder", cascade = {CascadeType.REMOVE})
     @Valid

@@ -1,0 +1,32 @@
+Bất động sản: //xong
+-id 
+- tên
+- tình trạng : 1 là thuê, 2 bán
+- mét vuông
+- quốc gia
+- địa chỉ
+- số tiền
+- ngày đăng
+- khóa ngoại id người bán
+
+tài khoản : // xong
+-id
+-username
+- password
+- chức vụ: 1 admin, 2 nhân viên, 3 khách hàng
+- tên
+- số điện thoại
+- email
+
+Giao dịch
+- Id giao dịch
+- ngày tạo
+- số tiền
+-tình trạng; chưa xủ lí, đang xử lí, đã xử lí
+- thanh toán: chuyển khoản, tiền mặt
+
+Chi tiết giao dịch:
+-id giao dịch
+-id khách hang
+-id nhân viên
+- id bds

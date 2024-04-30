@@ -16,21 +16,41 @@ public class OderProductPK implements Serializable {
     private Oder oder;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "client_id")
+    private Client client;
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "staff_id")
+    private Staff staff;
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
 
     public Oder getOder() {
         return this.oder;
     }
-
     public void setOder(Oder oder) {
         this.oder = oder;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public Staff getStaff() {
+        return staff;
+    }
+    public void setStaff(Staff staff) {
+        this.staff = staff;
     }
 
     public Product getProduct() {
         return this.product;
     }
-
     public void setProduct(Product product) {
         this.product = product;
     }
