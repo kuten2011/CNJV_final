@@ -54,7 +54,10 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .requestMatchers(HttpMethod.POST, "/api/users/login", "/api/users/register").permitAll()
+                .requestMatchers(HttpMethod.POST,  "/client**", "/user/api/register").permitAll()
+                .requestMatchers(HttpMethod.GET, "/user/index", "/product/sell",
+                        "/product/rent", "product/search-results",
+                        "/admin/client", "/admin/staff", "/admin/user", "/admin/product", "/admin").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
@@ -63,6 +66,4 @@ public class SecurityConfiguration {
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
-
-
 }

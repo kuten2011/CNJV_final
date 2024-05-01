@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng Ký Bất Động Sản</title>
+</head>
+<body>
+    <h2>Đăng Ký</h2>
+    <form action="/api/users/register" method="post">
+        <label for="name">Tên:</label>
+        <input type="text" id="name" name="name" required>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <label for="password">Mật khẩu:</label>
+        <input type="password" id="password" name="password" required>
+        <label for="confirm-password">Xác nhận mật khẩu:</label>
+        <input type="password" id="confirm-password" name="confirm-password" required>
+        <button type="submit">Đăng ký</button>
+        <p>Đã có tài khoản? <a href="login.html">Đăng nhập ngay</a></p>
+    </form>
+</body>
+</html>

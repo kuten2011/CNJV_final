@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Page</title>
+</head>
+<body>
+    <h1>Test Page</h1>
+    <button id="getDataButton">Get Data</button>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async function () {
+            const accessToken = localStorage.getItem("accessToken");
+
+            const getDataButton = document.getElementById("getDataButton");
+            getDataButton.addEventListener("click", async function () {
+                try {
+                    const response = await fetch("http://localhost:8080/api/users", {
+                        method: "GET",
+                        headers: {
+                            "Authorization": `Bearer ${accessToken}`,
+                            "Content-Type": "application/json",
+                        },
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        console.log("Data from API:", data);
+                        alert("Data from API: " + JSON.stringify(data));
+                    } else {
+                        console.error("Failed to fetch data:", response.statusText);
+                        alert("Failed to fetch data: " + response.statusText);
+                    }
+                } catch (error) {
+                    console.error("Error:", error);
+                    alert("Error: " + error.message);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

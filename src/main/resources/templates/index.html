@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Chủ Bất Động Sản</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            margin: 0;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+        nav ul li {
+            display: inline-block;
+            margin-right: 20px;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: white;
+        }
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+        form {
+            text-align: center;
+            margin-top: 20px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        section {
+            padding: 20px;
+            text-align: center;
+        }
+        section h2 {
+            color: #333;
+        }
+        section p {
+            color: #666;
+        }
+        a {
+            text-decoration: none;
+            color: #4CAF50;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Trang Chủ Bất Động Sản</h1>
+        <nav>
+            <ul>
+                <li><a href="register.html">Đăng Ký / Đăng Nhập</a></li>
+                <li><a href="#buy">Mua Bất Động Sản</a></li>
+                <li><a href="#rent">Thuê Bất Động Sản</a></li>
+            </ul>
+        </nav>
+        <form action="/product/search-results" method="get">
+            <input type="text" id="search" name="search" placeholder="Tìm kiếm địa điểm...">
+            <button type="submit">Tìm kiếm</button>
+        </form>
+    </header>
+    <section id="buy">
+        <h2>Mua Bất Động Sản</h2>
+        <p>Duyệt qua các danh sách bất động sản để tìm ngôi nhà mơ ước của bạn.</p>
+        <a href="/product/sell">Xem danh sách mua</a>
+    </section>
+    <section id="rent">
+        <h2>Thuê Bất Động Sản</h2>
+        <p>Tìm kiếm các căn hộ và nhà cho thuê phù hợp với nhu cầu của bạn.</p>
+        <a href="/product/rent">Xem danh sách thuê</a>
+    </section>
+    <footer>
+        <p>Bản quyền © 2024 Bất Động Sản. Tất cả quyền được bảo lưu.</p>
+    </footer>
+</body>
+</html>

@@ -4,6 +4,8 @@ import CNJV.lab10.Service.ClientService;
 import CNJV.lab10.Service.UserService;
 import CNJV.lab10.dto.UserDto;
 import CNJV.lab10.model.Client;
+import CNJV.lab10.model.Product;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +18,10 @@ import org.springframework.web.bind.annotation.*;
 import CNJV.lab10.jwtutils.Token;
 import CNJV.lab10.jwtutils.TokenManager;
 import CNJV.lab10.model.User;
+import org.springframework.web.servlet.ModelAndView;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/user")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -35,26 +38,52 @@ public class UserController {
     @Autowired
     private TokenManager tokenManager;
 
-    @PostMapping(path="/login")
-    public ResponseEntity<Token> login(@RequestBody UserDto userDto) throws Exception {
+    @PostMapping("/api/login")
+    public ModelAndView login(HttpServletRequest httpServletRequest) throws Exception {
         try {
             authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(userDto.getUsername(), userDto.getPassword())
+                    new UsernamePasswordAuthenticationToken(httpServletRequest.getParameter("email"), httpServletRequest.getParameter("password"))
             );
         } catch (DisabledException e) {
-            throw new Exception("USER_DISABLED", e);
+            ModelAndView modelAndView = new ModelAndView("login");
+            modelAndView.addObject("error", "USER_DISABLED");
+            return modelAndView;
         } catch (BadCredentialsException e) {
-            throw new Exception("INVALID_CREDENTIALS", e);
+            ModelAndView modelAndView = new ModelAndView("login");
+            modelAndView.addObject("error", "INVALID_CREDENTIALS");
+            return modelAndView;
         } catch (Exception e) {
             throw e;
         }
-        final User user = userService.loadUserByUsername(userDto.getUsername());
+
+        final User user = userService.loadUserByUsername(httpServletRequest.getParameter("email"));
         final String jwtToken = tokenManager.generateJwtToken(user);
-        System.out.println(jwtToken);
-        return new ResponseEntity(new Token(jwtToken), HttpStatus.OK);
+
+        // Redirect to index page
+        ModelAndView modelAndView = new ModelAndView("index");
+        modelAndView.addObject("token", jwtToken);
+        return modelAndView;
     }
 
-    @PostMapping(path="/register")
+    @GetMapping("/login")
+    public ModelAndView showLoginPage() {
+        ModelAndView modelAndView = new ModelAndView("login");
+        return modelAndView;
+    }
+
+    @GetMapping("/index")
+    public ModelAndView showIndexPage() {
+        ModelAndView modelAndView = new ModelAndView("index");
+        return modelAndView;
+    }
+
+    @GetMapping("/register")
+    public ModelAndView showRegisterPage() {
+        ModelAndView modelAndView = new ModelAndView("register");
+        return modelAndView;
+    }
+
+    @PostMapping(path="/api/register")
     public ResponseEntity<User> register(@RequestBody UserDto userDto) {
         User user = User.builder()
                 .username(userDto.getUsername())
@@ -77,7 +106,7 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
-    @GetMapping({"","/"})
+    @GetMapping("/api")
     public Iterable<User> getAll() {
         return userService.getAll();
     }

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+
+<body>
+    <h1>Login Form</h1>
+    <form action="/login" method="POST">
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email"><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password"><br>
+        <input type="submit" value="Login">
+    </form>
+
+    <script>
+        let accessToken; // Khai báo biến accessToken ở ngoài phạm vi của hàm DOMContentLoaded
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const loginForm = document.querySelector("form");
+
+            loginForm.addEventListener("submit", async function (event) {
+                event.preventDefault();
+
+                const email = document.getElementById("email").value;
+                const password = document.getElementById("password").value;
+                var emailInput = document.querySelector('input[name="email"]');
+                var passwordInput = document.querySelector('input[name="password"]');
+
+                try {
+                    const response = await fetch("http://localhost:8080/login", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ username: email, password: password }),
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        // Lưu token vào biến accessToken và LocalStorage
+                        accessToken = data.token;
+                        localStorage.setItem("accessToken", accessToken);
+                        alert("Đăng nhập thành công!", accessToken); // Thông báo đăng nhập thành công
+                        // Mở file index.html sau khi đăng nhập thành công
+                        window.location.assign("/index");
+                        console.log("Login successful:");
+                    } else {
+                        emailInput.value = "";
+                        passwordInput.value = "";
+                        alert("Đăng nhập không thành công! Vui lòng kiểm tra lại");
+                        // Handle login failure, e.g., display error message
+                        console.error("Login failed:", response.statusText);
+                        emailInput.focus();
+                    }
+                } catch (error) {
+                    console.error("Error:", error);
+                }
+            });
+        });
+
+    </script>
+
+</body>
+
+</html>

@@ -1,5 +1,7 @@
 package CNJV.lab10.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,18 +18,18 @@ public class Product {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonIgnore
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name="client_id")
+    @JoinColumn(name="client_id", referencedColumnName = "id")
     private Client client;
-
-    @Basic (optional = false)
     private String name;
-    private int status; //1 mua 2 ban
+    private int status; //0 ban 1 thue
     private Double acreage;
     private String arena;
     private String address;
     private Double price;
 
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dateCreated;
 
     @Builder
@@ -40,5 +42,10 @@ public class Product {
         this.price = price;
         this.dateCreated = dateCreated;
         this.client = client;
+    }
+
+    @Override
+    public String toString() {
+        return "name:" + name;
     }
 }
