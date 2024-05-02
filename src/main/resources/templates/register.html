@@ -1,22 +1,149 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <title>Đăng Ký Bất Động Sản</title>
+    <style>
+        /* style.css */
+
+        form {
+            margin: 0 auto;
+            max-width: 500px;
+            background-color: #fff;
+            padding: 50px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+
+        .register-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        @media only screen and (max-width: 500px) {
+            form {
+                padding: 10px;
+            }
+        }
+    </style>
 </head>
+
 <body>
     <h2>Đăng Ký</h2>
-    <form action="/api/users/register" method="post">
-        <label for="name">Tên:</label>
+    <form id="registerForm" action="/user/api/register" method="POST">
+        <label for="name">Username:</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <label for="confirm-password">Confirm Password:</label>
+        <input type="password" id="confirm-password" name="confirm-password" required>
+
+        <label for="name">Name:</label>
         <input type="text" id="name" name="name" required>
+
+        <label for="phone">Phone:</label>
+        <input type="number" id="phone" name="phone" pattern="[0-9]*" inputmode="numeric" required>
+
+
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" required>
-        <label for="password">Mật khẩu:</label>
-        <input type="password" id="password" name="password" required>
-        <label for="confirm-password">Xác nhận mật khẩu:</label>
-        <input type="password" id="confirm-password" name="confirm-password" required>
-        <button type="submit">Đăng ký</button>
-        <p>Đã có tài khoản? <a href="login.html">Đăng nhập ngay</a></p>
+
+        <button type="submit">Sign up</button>
+        <p>Đã có tài khoản? <a href="/login">Login</a></p>
     </form>
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Ngăn chặn form gửi dữ liệu mặc định
+
+            // Lấy giá trị từ các trường input
+            var name = document.getElementById('name').value;
+            var email = document.getElementById('email').value;
+            var password = document.getElementById('password').value;
+            var username = document.getElementById('username').value;
+            var phone = document.getElementById('phone').value;
+            var confirmPassword = document.getElementById('confirm-password').value;
+
+            // Kiểm tra xác nhận mật khẩu
+            if (password !== confirmPassword) {
+                alert("Xác nhận mật khẩu không khớp.");
+                return;
+            }
+
+            // Tạo đối tượng dữ liệu để gửi đi
+            var data = {
+                username: username,
+                password: password,
+                name: name,
+                phone: phone,
+                email: email
+            };
+
+            // Gửi dữ liệu đến endpoint của API
+            fetch('http://localhost:8080/user/api/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert("Đăng ký thành công!");
+                        console.log("Login successful:", data);
+                        window.location.href = '/login'; // Chuyển hướng sau khi đăng ký thành công
+                    } else {
+                        alert("Hãy kiểm tra lại thông tin");
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert("Đã có lỗi xảy ra. Vui lòng thử lại sau.");
+                });
+        });
+    </script>
 </body>
+
 </html>

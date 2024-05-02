@@ -32,6 +32,10 @@ public class Product {
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dateCreated;
 
+    public Client getClient() {
+        return client;
+    }
+
     @Builder
     public Product(String name, int status, Double acreage, String arena, String address, Double price, LocalDate dateCreated, Client client) {
         this.name = name;
@@ -42,10 +46,5 @@ public class Product {
         this.price = price;
         this.dateCreated = dateCreated;
         this.client = client;
-    }
-
-    @Override
-    public String toString() {
-        return "name:" + name;
     }
 }

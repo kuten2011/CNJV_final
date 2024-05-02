@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Detail</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.product-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+}
+
+.product-image {
+    margin-right: 20px;
+}
+
+.product-info {
+    max-width: 400px;
+}
+
+.product-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.product-description {
+    margin-bottom: 15px;
+}
+
+.product-price-rent,
+.product-price-sale {
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.product-info-details {
+    font-size: 16px;
+}
+
+</style>
+</head>
+
+<body>
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-md-6">
+                <img src="hinh.jpg" alt="Product Image" class="img-fluid">
+            </div>
+            <div class="col-md-6 border p-4">
+                <h1 class="product-title">Product Name</h1>
+                <p class="product-description">Product description goes here.</p>
+                <p class="product-price-sale font-weight-bold text-danger">Rent: $50/month</p>
+                <ul class="list-unstyled product-info-details">
+                    <li><strong>Acreage:</strong> 100 sq.ft</li>
+                    <li><strong>Status:</strong> Available</li>
+                    <li><strong>Address:</strong> 123 Main Street</li>
+                    <li><strong>Date Created:</strong> January 1, 2024</li>
+                </ul>
+                <button class="btn btn-primary">CONTACT US FOR RENT NOW</button>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

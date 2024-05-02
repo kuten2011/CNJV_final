@@ -3,7 +3,9 @@ package CNJV.lab10.Service;
 import CNJV.lab10.Repository.StaffRepository;
 import CNJV.lab10.model.Staff;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class StaffServiceImpl implements StaffService{
     @Autowired
     StaffRepository staffRepository;

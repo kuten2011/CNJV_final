@@ -20,7 +20,7 @@ public class Client {
     private String email;
 
     @JsonIgnore
-    @OneToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "users_username", referencedColumnName = "username")
     private User user;
 

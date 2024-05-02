@@ -28,33 +28,48 @@ public class Oder {
     @JsonFormat (pattern = "dd/MM/yyyy")
     private LocalDate dateCreate;
 
-    private OderStatus status;
+    private OderStatus status; // 0 chưa, 1 đang, 2 đã
 
     private int pay; //0 chuyen khoan, 1 tien mat
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "oder_id", referencedColumnName = "id")
-    private Oder oder;
-
+    @JsonIgnore
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id", referencedColumnName = "id")
     private Client client;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JsonIgnore
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "staff_id", referencedColumnName = "id")
     private Staff staff;
 
+    @JsonIgnore
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 
     @Transient
     public Double getMoney() {
-        return 0.1 * product.getPrice();
+        return 0.05 * product.getPrice();
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public Staff getStaff() {
+        return staff;
+    }
+
+    public Product getProduct() {
+        return product;
     }
 
     @Builder
-    public Oder(LocalDate dateCreate, OderStatus status) {
+    public Oder(LocalDate dateCreate, OderStatus status, int pay, Client client, Staff staff, Product product) {
+        this.pay = pay;
+        this.staff = staff;
+        this.client = client;
+        this.product = product;
         this.dateCreate = dateCreate;
         this.status = status;
     }

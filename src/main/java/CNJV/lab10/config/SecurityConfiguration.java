@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web
         .configuration.EnableWebSecurity;
@@ -50,15 +51,18 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder();
     }
 
+//    .requestMatchers(HttpMethod.GET, "/user/index", "/product/sell",
+//            "/product/rent", "product/search-results",
+//            "/admin/client", "/admin/staff", "/admin/user", "/admin/product", "/admin", "/login").permitAll()
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .requestMatchers(HttpMethod.POST,  "/client**", "/user/api/register").permitAll()
-                .requestMatchers(HttpMethod.GET, "/user/index", "/product/sell",
-                        "/product/rent", "product/search-results",
-                        "/admin/client", "/admin/staff", "/admin/user", "/admin/product", "/admin").permitAll()
-                .anyRequest().authenticated()
+                .requestMatchers(HttpMethod.POST,  "/user/api/register", "/login", "/user/api/login", "/test").permitAll()
+                .requestMatchers(HttpMethod.GET, "/login", "/test").permitAll()
+                .requestMatchers( "/index").permitAll()
+//                .requestMatchers("/admin/**").hasRole("ADMIN")
+//                .anyRequest().permitAll()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -66,4 +70,43 @@ public class SecurityConfiguration {
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
-}
+
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        // Cấu hình xác thực người dùng và mã hóa mật khẩu
+        auth.inMemoryAuthentication()
+                .withUser("admin").password("{noop}123").roles("ADMIN");
+    }
+
+//    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        http.csrf().disable()
+//                .authorizeRequests()
+//                .requestMatchers(HttpMethod.POST,  "/user/api/register", "/login", "/user/api/login").permitAll()
+//                .requestMatchers(HttpMethod.GET, "/login").permitAll()
+//                .anyRequest().authenticated()
+//                .and()
+//                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
+//                .and()
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // Thay đổi từ STATELESS thành ALWAYS
+//        // Add a filter to validate the tokens with every request
+//        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+//        return http.build();
+//    }
+
+//        @Override
+//        protected void configure(HttpSecurity http) throws Exception {
+//            http.authorizeRequests()
+//                    .antMatchers("/public/**").permitAll()
+//                    .antMatchers("/admin/**").hasRole("ADMIN")
+//                    .anyRequest().authenticated()
+//                    .and()
+//                    .formLogin().loginPage("/login").permitAll()
+//                    .defaultSuccessUrl("/dashboard") // URL chuyển hướng sau khi đăng nhập thành công
+//                    .and()
+//                    .logout().permitAll();
+//        }
+
+
+
+        // Cấu hình xác thực người dùng và mã hóa mật khẩu
+    }

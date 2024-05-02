@@ -1,0 +1,52 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <h1>Product List</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Acreage</th>
+                <th>Arena</th>
+                <th>Address</th>
+                <th>Price</th>
+                <th>Date Created</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="product : ${products}">
+                <td th:text="${product.id}"></td>
+                <td th:text="${product.name}"></td>
+                <td th:text="${product.status == 1 ? 'Thue' : 'Ban'}"></td>
+                <td th:text="${product.acreage}"></td>
+                <td th:text="${product.arena}"></td>
+                <td th:text="${product.address}"></td>
+                <td th:text="${product.price}"></td>
+                <td th:text="${product.dateCreated}"></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="pagination">
+        <li>Previous</li>
+        <li class="active">1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+        <li>5</li>
+        <li>Next</li>
+    </div>
+</body>
+
+</html>

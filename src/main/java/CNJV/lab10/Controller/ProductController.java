@@ -1,16 +1,25 @@
 package CNJV.lab10.Controller;
 
+import CNJV.lab10.Service.ClientService;
+import CNJV.lab10.Service.LoginService;
 import CNJV.lab10.Service.ProductService;
+import CNJV.lab10.Service.UserService;
 import CNJV.lab10.dto.ProductDTO;
+import CNJV.lab10.model.Client;
 import CNJV.lab10.model.Product;
 
+import CNJV.lab10.model.User;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +28,12 @@ import java.util.List;
 public class ProductController {
     @Autowired
     ProductService productService;
+    @Autowired
+    ClientService clientService;
+    @Autowired
+    LoginService loginService;
+    @Autowired
+    UserService userService;
 
     /*Product*/
 
@@ -36,20 +51,29 @@ public class ProductController {
         return modelAndView;
     }
 
-//    @PostMapping
-//    public ResponseEntity<Product> postProduct(@RequestBody ProductDTO productDto) {
-//        Product product1 = Product.builder()
-//                .brand(productDto.getBrand())
-//                .color(productDto.getColor())
-//                .name(productDto.getName())
-//                .price(productDto.getPrice())
-//                .build();
-//        productService.save(product1);
-//        return new ResponseEntity<>(product1, HttpStatus.CREATED);
-//    }
+    @PostMapping("/{id}")
+    public ResponseEntity<Product> postProduct(@RequestBody ProductDTO productDto, @PathVariable Long id) throws Exception{
+        Product product1 = new Product(productDto.getName()
+                , productDto.getStatus(), productDto.getAcreage(), productDto.getArena()
+                , productDto.getAddress(), productDto.getPrice()
+                , LocalDate.now(), clientService.getClient(id));
+
+        productService.save(product1);
+        return new ResponseEntity<>(product1, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
+    public ModelAndView buyProduct(@PathVariable Long id) throws Exception{
+        Product product = productService.getProduct(id);
+        Client client = product.getClient();
+        ModelAndView modelAndView = new ModelAndView("mua");
+        modelAndView.addObject("products", product);
+        modelAndView.addObject("client", client);
+        return modelAndView;
+    }
 
     /*Product by id*/
-    @GetMapping("/{id}")
+    @GetMapping("/api/{id}")
     public Product getProduct(@PathVariable Long id) throws Exception{
         return productService.getProduct(id);
     }
@@ -82,6 +106,11 @@ public class ProductController {
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
+    @GetMapping("/add")
+    public ModelAndView add() {
+        return new ModelAndView("add_product");
+    }
+
     @GetMapping("/sell")
     public ModelAndView getSellProduct() {
         Iterable<Product> products = productService.getAllProduct();
@@ -106,20 +135,46 @@ public class ProductController {
                 listRentProduct.add(product);
             }
         }
+        Iterable<Product> a = listRentProduct;
 
         ModelAndView modelAndView = new ModelAndView("product");
-        modelAndView.addObject("products", listRentProduct);
+        modelAndView.addObject("products", a);
         return modelAndView;
+    }
+
+//    @PostMapping(value = "/add")
+//    public ResponseEntity<Product> testAddProduct(@RequestBody ProductDTO productDTO) {
+//        User user = userService.loadUserByUsername(loginService.get(1l).getUsername());
+//        Client client = new Client(user.getName(), user.getPhone(), user.getEmail(), user);
+//        clientService.saveClient(client);
+//
+//        // Tạo đối tượng Product
+//        Product product = new Product(productDTO.getName()
+//                ,productDTO.getStatus()
+//                ,productDTO.getAcreage()
+//                ,productDTO.getArena()
+//                ,productDTO.getAddress()
+//                ,productDTO.getPrice()
+//                ,LocalDate.now(), client);
+//
+//        // Lưu thông tin sản phẩm vào CSDL
+//        productService.save(product);
+//
+//        return new ResponseEntity<Product>(product, HttpStatus.CREATED);
+//    }
+
+    @GetMapping("/upload-success")
+    public String showUploadSuccessPage() {
+        return "index";
+    }
+
+    @GetMapping("/upload-error")
+    public String showUploadErrorPage() {
+        return "index";
     }
 
     @GetMapping("/search-results")
     public ModelAndView findProduct(@RequestParam("search") String result) {
-        if (result == null || result.trim().isEmpty()) {
-            ModelAndView errorModelAndView = new ModelAndView("error");
-            errorModelAndView.addObject("message", "Vui lòng nhập từ khóa tìm kiếm");
-            return errorModelAndView;
-        }
-
         Iterable<Product> products = productService.getAllProduct();
         List<Product> listRentProduct = new ArrayList<>();
         result = result.toLowerCase().replaceAll("\\+", "").replace(" ", "").trim();
@@ -131,6 +186,12 @@ public class ProductController {
                 listRentProduct.add(product);
             }
         }
+
+        if (listRentProduct.isEmpty()) {
+            // Redirect đến trang "/index"
+            return new ModelAndView(new RedirectView("/index"));
+        }
+
         ModelAndView modelAndView = new ModelAndView("product");
         modelAndView.addObject("products", listRentProduct);
         return modelAndView;

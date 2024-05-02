@@ -1,42 +1,144 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Test Page</title>
+    <title>Login</title>
+    <link rel="stylesheet" href="../style.css">
 </head>
+
+<style>
+    form {
+    margin: 0 auto;
+    max-width: 500px;
+    background-color: #fff;
+    padding: 50px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+form label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button[type="submit"] {
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.error-message {
+    color: red;
+    margin-top: 10px;
+}
+
+.register-link {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+}
+
+@media only screen and (max-width: 500px) {
+    form {
+        padding: 10px;
+    }
+}
+
+</style>
+
 <body>
-    <h1>Test Page</h1>
-    <button id="getDataButton">Get Data</button>
+    <h1>Login Form</h1>
+    <form action="/login" method="POST">
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email"><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password"><br>
+        <input type="submit" value="Login">
+        <a href="/register">Sign up</a>
+    </form>
 
     <script>
-        document.addEventListener("DOMContentLoaded", async function () {
-            const accessToken = localStorage.getItem("accessToken");
+        let accessToken; // Khai báo biến accessToken ở ngoài phạm vi của hàm DOMContentLoaded
 
-            const getDataButton = document.getElementById("getDataButton");
-            getDataButton.addEventListener("click", async function () {
+        document.addEventListener("DOMContentLoaded", function () {
+            const loginForm = document.querySelector("form");
+
+            loginForm.addEventListener("submit", async function (event) {
+                event.preventDefault();
+
+                const email = document.getElementById("email").value;
+                const password = document.getElementById("password").value;
+                var emailInput = document.querySelector('input[name="email"]');
+                var passwordInput = document.querySelector('input[name="password"]');
+
                 try {
-                    const response = await fetch("http://localhost:8080/api/users", {
+                    const response = await fetch("http://localhost:8080/index", {
                         method: "GET",
                         headers: {
-                            "Authorization": `Bearer ${accessToken}`,
                             "Content-Type": "application/json",
                         },
+                        body: JSON.stringify({ username: email, password: password }),
                     });
-
                     if (response.ok) {
                         const data = await response.json();
-                        console.log("Data from API:", data);
-                        alert("Data from API: " + JSON.stringify(data));
+                        // Lưu token vào biến accessToken và LocalStorage
+                        accessToken = data.token;
+                        localStorage.setItem("accessToken", accessToken);
+                        document.cookie = `accessToken=${accessToken}; path=/; secure; HttpOnly`;
+                        alert("Đăng nhập thành công!"); // Thông báo đăng nhập thành công
+                        // Mở file index.html sau khi đăng nhập thành công
+                        window.location.href = '/index'; 
+                        console.log("Login successful:");
+                        // Lấy token từ local storage
+                        const token = localStorage.getItem('accessToken');
+
+                        if (token) {
+                            // Nếu có accessToken, chuyển hướng sang trang index.html
+                            window.location.href = '/index';
+                        } else {
+                            // Nếu không có accessToken, thực hiện các xử lý khác
+                            console.log('Token not found in localStorage.');
+                        }
+
                     } else {
-                        console.error("Failed to fetch data:", response.statusText);
-                        alert("Failed to fetch data: " + response.statusText);
+                        emailInput.value = "";
+                        passwordInput.value = "";
+                        alert("Đăng nhập không thành công! Vui lòng kiểm tra lại");
+                        // Handle login failure, e.g., display error message
+                        console.error("Login failed:", response.statusText);
+                        emailInput.focus();
                     }
                 } catch (error) {
                     console.error("Error:", error);
-                    alert("Error: " + error.message);
                 }
             });
         });
+
     </script>
+
 </body>
+
 </html>

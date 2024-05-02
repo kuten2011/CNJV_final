@@ -1,118 +1,172 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trang Chủ Bất Động Sản</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f8f8f8;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        header {
-            background-color: #333;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-        h1 {
-            margin: 0;
-        }
-        nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 20px 0;
-        }
-        nav ul li {
-            display: inline-block;
-            margin-right: 20px;
-        }
-        nav ul li a {
-            text-decoration: none;
-            color: white;
-        }
-        nav ul li a:hover {
-            text-decoration: underline;
-        }
-        form {
-            text-align: center;
-            margin-top: 20px;
-        }
-        input[type="text"] {
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        button[type="submit"] {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button[type="submit"]:hover {
-            background-color: #45a049;
-        }
-        section {
-            padding: 20px;
-            text-align: center;
-        }
-        section h2 {
-            color: #333;
-        }
-        section p {
-            color: #666;
-        }
-        a {
-            text-decoration: none;
-            color: #4CAF50;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            margin-top: auto;
-        }
-    </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
+<style>
+    body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #f8f8f8;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    header {
+        background-color: #333;
+        color: white;
+        padding: 20px;
+        text-align: center;
+    }
+
+    h1 {
+        margin: 0;
+    }
+
+    nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 20px 0;
+    }
+
+    nav ul li {
+        display: inline-block;
+        margin-right: 20px;
+    }
+
+    nav ul li a {
+        text-decoration: none;
+        color: white;
+    }
+
+    nav ul li a:hover {
+        text-decoration: underline;
+    }
+
+    form {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    input[type="text"] {
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    button[type="submit"] {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    button[type="submit"]:hover {
+        background-color: #45a049;
+    }
+
+    section {
+        padding: 20px;
+        text-align: center;
+    }
+
+    section h2 {
+        color: #333;
+    }
+
+    section p {
+        color: #666;
+    }
+
+    a {
+        text-decoration: none;
+        color: #4CAF50;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    footer {
+        background-color: #333;
+        color: white;
+        text-align: center;
+        padding: 10px;
+        margin-top: auto;
+    }
+</style>
+
 <body>
     <header>
         <h1>Trang Chủ Bất Động Sản</h1>
         <nav>
             <ul>
-                <li><a href="register.html">Đăng Ký / Đăng Nhập</a></li>
-                <li><a href="#buy">Mua Bất Động Sản</a></li>
-                <li><a href="#rent">Thuê Bất Động Sản</a></li>
+                <li><a href="/login">Đăng nhập </a>/<a href="/register">Đăng ký</a></li>
+                <li><a href="/product/sell">Mua Bất Động Sản</a></li>
+                <li><a href="/product/rent">Thuê Bất Động Sản</a></li>
+                <li><a href="/product">Bất Động Sản</a></li>
+                <li><a href="/oder">mẫu hóa đơn</a></li>
             </ul>
         </nav>
-        <form action="/product/search-results" method="get">
-            <input type="text" id="search" name="search" placeholder="Tìm kiếm địa điểm...">
-            <button type="submit">Tìm kiếm</button>
+        <form action="/product/search-results" method="get" class="mx-auto">
+            <div class="input-group">
+                <input type="text" id="search" name="search" class="form-control" placeholder="Tìm kiếm địa điểm...">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-success" id="search_tim">Tìm kiếm</button>
+                </div>
+            </div>
         </form>
     </header>
     <section id="buy">
-        <h2>Mua Bất Động Sản</h2>
-        <p>Duyệt qua các danh sách bất động sản để tìm ngôi nhà mơ ước của bạn.</p>
-        <a href="/product/sell">Xem danh sách mua</a>
+        <div class="container">
+            <h2>Mua Bất Động Sản</h2>
+            <p>Duyệt qua các danh sách bất động sản để tìm ngôi nhà mơ ước của bạn.</p>
+            <a href="/product/sell" class="btn btn-primary">Xem danh sách mua</a>
+        </div>
     </section>
     <section id="rent">
-        <h2>Thuê Bất Động Sản</h2>
-        <p>Tìm kiếm các căn hộ và nhà cho thuê phù hợp với nhu cầu của bạn.</p>
-        <a href="/product/rent">Xem danh sách thuê</a>
+        <div class="container">
+            <h2>Thuê Bất Động Sản</h2>
+            <p>Tìm kiếm các căn hộ và nhà cho thuê phù hợp với nhu cầu của bạn.</p>
+            <a href="/product/rent" class="btn btn-primary">Xem danh sách thuê</a>
+        </div>
     </section>
     <footer>
-        <p>Bản quyền © 2024 Bất Động Sản. Tất cả quyền được bảo lưu.</p>
+        <div class="container">
+            <p>Bản quyền © 2024 Bất Động Sản. Tất cả quyền được bảo lưu.</p>
+        </div>
     </footer>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        // Đoạn mã Axios để gửi yêu cầu GET tới endpoint '/index' với token Authorization
+        const token = localStorage.getItem('accessToken'); // Lấy token từ localStorage, bạn cần đảm bảo rằng token đã được lưu trước khi gửi yêu cầu Axios
+    
+        axios.get('/index', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(response => {
+            // Xử lý dữ liệu trả về nếu cần
+            console.log(response.data);
+        })
+        .catch(error => {
+            // Xử lý lỗi nếu có
+            console.error(error);
+        });
+    </script>
 </body>
+
 </html>

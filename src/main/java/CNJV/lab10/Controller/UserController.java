@@ -1,14 +1,14 @@
 package CNJV.lab10.Controller;
 
 import CNJV.lab10.Service.ClientService;
+import CNJV.lab10.Service.LoginService;
 import CNJV.lab10.Service.UserService;
 import CNJV.lab10.dto.UserDto;
 import CNJV.lab10.model.Client;
+import CNJV.lab10.model.Login;
 import CNJV.lab10.model.Product;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -18,11 +18,14 @@ import org.springframework.web.bind.annotation.*;
 import CNJV.lab10.jwtutils.Token;
 import CNJV.lab10.jwtutils.TokenManager;
 import CNJV.lab10.model.User;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
+    @Autowired
+    private LoginService loginService;
     @Autowired
     private UserService userService;
 
@@ -38,37 +41,24 @@ public class UserController {
     @Autowired
     private TokenManager tokenManager;
 
-    @PostMapping("/api/login")
-    public ModelAndView login(HttpServletRequest httpServletRequest) throws Exception {
+    @PostMapping(path="/api/login")
+    public ResponseEntity<Token> login(@RequestBody UserDto userDto) throws Exception {
         try {
             authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(httpServletRequest.getParameter("email"), httpServletRequest.getParameter("password"))
+                    new UsernamePasswordAuthenticationToken(userDto.getUsername(), userDto.getPassword())
             );
         } catch (DisabledException e) {
-            ModelAndView modelAndView = new ModelAndView("login");
-            modelAndView.addObject("error", "USER_DISABLED");
-            return modelAndView;
+            throw new Exception("USER_DISABLED", e);
         } catch (BadCredentialsException e) {
-            ModelAndView modelAndView = new ModelAndView("login");
-            modelAndView.addObject("error", "INVALID_CREDENTIALS");
-            return modelAndView;
+            throw new Exception("INVALID_CREDENTIALS", e);
         } catch (Exception e) {
             throw e;
         }
-
-        final User user = userService.loadUserByUsername(httpServletRequest.getParameter("email"));
+        final User user = userService.loadUserByUsername(userDto.getUsername());
         final String jwtToken = tokenManager.generateJwtToken(user);
+        loginService.update(new Login(userDto.getUsername()));
 
-        // Redirect to index page
-        ModelAndView modelAndView = new ModelAndView("index");
-        modelAndView.addObject("token", jwtToken);
-        return modelAndView;
-    }
-
-    @GetMapping("/login")
-    public ModelAndView showLoginPage() {
-        ModelAndView modelAndView = new ModelAndView("login");
-        return modelAndView;
+        return new ResponseEntity(new Token(jwtToken), HttpStatus.OK);
     }
 
     @GetMapping("/index")
