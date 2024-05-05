@@ -5,84 +5,102 @@
     <meta charset="UTF-8">
     <title>Login</title>
     <link rel="stylesheet" href="../style.css">
+    <style>
+        /* style.css */
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        form {
+            max-width: 500px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+
+        .register-link a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        @media only screen and (max-width: 500px) {
+            form {
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
-
-<style>
-    form {
-    margin: 0 auto;
-    max-width: 500px;
-    background-color: #fff;
-    padding: 50px;
-    border-radius: 12px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-form label {
-    display: block;
-    margin-bottom: 10px;
-}
-
-input[type="text"],
-input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-button[type="submit"] {
-    width: 100%;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-button[type="submit"]:hover {
-    background-color: #45a049;
-}
-
-h1 {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.error-message {
-    color: red;
-    margin-top: 10px;
-}
-
-.register-link {
-    display: block;
-    text-align: center;
-    margin-top: 20px;
-}
-
-@media only screen and (max-width: 500px) {
-    form {
-        padding: 10px;
-    }
-}
-
-</style>
 
 <body>
     <h1>Login Form</h1>
     <form action="/login" method="POST">
         <label for="email">Email:</label>
-        <input type="text" id="email" name="email"><br>
+        <input type="text" id="email" name="email" required>
+
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password"><br>
+        <input type="password" id="password" name="password" required>
+
         <input type="submit" value="Login">
-        <a href="/register">Sign up</a>
+
+        <div class="register-link">
+            <p>Don't have an account? <a href="/register">Sign up</a></p>
+        </div>
     </form>
 
     <script>
-        let accessToken; // Khai báo biến accessToken ở ngoài phạm vi của hàm DOMContentLoaded
-
         document.addEventListener("DOMContentLoaded", function () {
             const loginForm = document.querySelector("form");
 
@@ -104,30 +122,15 @@ h1 {
                     });
                     if (response.ok) {
                         const data = await response.json();
-                        // Lưu token vào biến accessToken và LocalStorage
-                        accessToken = data.token;
+                        const accessToken = data.token;
                         localStorage.setItem("accessToken", accessToken);
                         document.cookie = `accessToken=${accessToken}; path=/; secure; HttpOnly`;
-                        alert("Đăng nhập thành công!"); // Thông báo đăng nhập thành công
-                        // Mở file index.html sau khi đăng nhập thành công
-                        window.location.href = '/index'; 
-                        console.log("Login successful:");
-                        // Lấy token từ local storage
-                        const token = localStorage.getItem('accessToken');
-
-                        if (token) {
-                            // Nếu có accessToken, chuyển hướng sang trang index.html
-                            window.location.href = '/index';
-                        } else {
-                            // Nếu không có accessToken, thực hiện các xử lý khác
-                            console.log('Token not found in localStorage.');
-                        }
-
+                        alert("Đăng nhập thành công!");
+                        window.location.href = '/index';
                     } else {
                         emailInput.value = "";
                         passwordInput.value = "";
                         alert("Đăng nhập không thành công! Vui lòng kiểm tra lại");
-                        // Handle login failure, e.g., display error message
                         console.error("Login failed:", response.statusText);
                         emailInput.focus();
                     }

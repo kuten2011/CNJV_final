@@ -33,8 +33,26 @@ public class User implements UserDetails {
 
     private Boolean enabled;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Client client;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Staff staff;
+
+    public Staff getStaff() {
+        return this.staff;
+    }
+
+    public void setStaff(Staff staff) {
+        this.staff = staff;
+    }
+
+    public Client getClient() { return this.client;}
+
     @Builder
-    public User(String username, String password, String name, String phone, String email, int position, Boolean enabled) {
+    public User(String username, String password, String name, String phone, String email, int position, Boolean enabled, Client client) {
         this.username = username;
         this.password = password;
         this.name = name;

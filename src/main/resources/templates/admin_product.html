@@ -86,7 +86,7 @@
             <tr th:each="product : ${products}">
                 <td th:text="${product.id}"></td>
                 <td th:text="${product.name}"></td>
-                <td th:text="${product.status == 1 ? 'Thue' : 'Ban'}"></td>
+                <td th:text="${product.status == 0 ? 'Sale' : (product.status == 1 ? 'Rent' : 'Sold out')}"></td>
                 <td th:text="${product.acreage}"></td>
                 <td th:text="${product.arena}"></td>
                 <td th:text="${product.address}"></td>

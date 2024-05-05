@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng Ký Bất Động Sản</title>
+    <style>
+        /* Global styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        /* Form styles */
+        form {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 50px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .login-link a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        /* Responsive styles */
+        @media only screen and (max-width: 600px) {
+            form {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Đăng Ký</h2>
+    <form id="registerForm" action="/user/api/register" method="POST">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <label for="confirm-password">Confirm Password:</label>
+        <input type="password" id="confirm-password" name="confirm-password" required>
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="phone">Phone:</label>
+        <input type="text" id="phone" name="phone" pattern="[0-9]*" inputmode="numeric" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="role">Position:</label>
+        <select id="role" name="role">
+            <option value="admin">Admin</option>
+            <option value="staff">Staff</option>
+            <option value="client">Client</option>
+        </select>
+
+        <button type="submit">Sign up</button>
+        <div class="login-link">
+            <a href="/admin">Admin</a>
+        </div>
+    </form>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+            var confirmPassword = document.getElementById('confirm-password').value;
+            var name = document.getElementById('name').value;
+            var phone = document.getElementById('phone').value;
+            var email = document.getElementById('email').value;
+            var role = document.getElementById('role').value;
+
+            if (password !== confirmPassword) {
+                alert("Xác nhận mật khẩu không khớp.");
+                return;
+            }
+
+            var data = {
+                username: username,
+                password: password,
+                name: name,
+                phone: phone,
+                email: email
+            };
+
+            if (role === 'staff') {
+                fetch('http://localhost:8080/user/api/register/staff', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert("Đăng ký thành công!");
+                        window.location.href = '/login';
+                    } else {
+                        alert("Hãy kiểm tra lại thông tin");
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert("Đã có lỗi xảy ra. Vui lòng thử lại sau.");
+                });
+            } else if (role === 'client') {
+                fetch('http://localhost:8080/user/api/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert("Đăng ký thành công!");
+                        window.location.href = '/login';
+                    } else {
+                        alert("Hãy kiểm tra lại thông tin");
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert("Đã có lỗi xảy ra. Vui lòng thử lại sau.");
+                });
+            } else if (role === 'admin') {
+                fetch('http://localhost:8080/user/api/register/admin', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert("Đăng ký thành công!");
+                        window.location.href = '/login';
+                    } else {
+                        alert("Hãy kiểm tra lại thông tin");
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert("Đã có lỗi xảy ra. Vui lòng thử lại sau.");
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

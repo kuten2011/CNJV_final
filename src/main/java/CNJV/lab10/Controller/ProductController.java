@@ -45,7 +45,14 @@ public class ProductController {
 
     @GetMapping({"/", ""})
     public ModelAndView getAllProductsHTML() {
-        Iterable<Product> listProducts = productService.getAllProduct();
+        Iterable<Product> products = productService.getAllProduct();
+        List<Product> listProducts = new ArrayList<>();
+        for (Product product : products) {
+            if (product.getStatus() != 2) {
+                listProducts.add(product);
+            }
+        }
+
         ModelAndView modelAndView = new ModelAndView("product");
         modelAndView.addObject("products", listProducts);
         return modelAndView;
@@ -77,28 +84,6 @@ public class ProductController {
     public Product getProduct(@PathVariable Long id) throws Exception{
         return productService.getProduct(id);
     }
-
-//    @PutMapping("/{id}")
-//    public ResponseEntity<Product> putProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO) throws Exception{
-//        Product product = productService.getProduct(id);
-//        if (productDTO.getName() != null) product.setName(productDTO.getName());
-//        if (productDTO.getBrand() != null) product.setBrand(productDTO.getBrand());
-//        if (productDTO.getColor() != null) product.setColor(productDTO.getColor());
-//        if (productDTO.getPrice() != null) product.setPrice(productDTO.getPrice());
-//        productService.save(product);
-//        return new ResponseEntity<>(product, HttpStatus.OK);
-//    }
-//
-//    @PatchMapping("/{id}")
-//    public ResponseEntity<Product> patchProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO) throws Exception{
-//        Product product = productService.getProduct(id);
-//        if (productDTO.getName() != null) product.setName(productDTO.getName());
-//        if (productDTO.getBrand() != null) product.setBrand(productDTO.getBrand());
-//        if (productDTO.getColor() != null) product.setColor(productDTO.getColor());
-//        if (productDTO.getPrice() != null) product.setPrice(productDTO.getPrice());
-//        productService.save(product);
-//        return new ResponseEntity<>(product, HttpStatus.OK);
-//    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Product> deleteProduct(@PathVariable Long id) {
@@ -141,27 +126,6 @@ public class ProductController {
         modelAndView.addObject("products", a);
         return modelAndView;
     }
-
-//    @PostMapping(value = "/add")
-//    public ResponseEntity<Product> testAddProduct(@RequestBody ProductDTO productDTO) {
-//        User user = userService.loadUserByUsername(loginService.get(1l).getUsername());
-//        Client client = new Client(user.getName(), user.getPhone(), user.getEmail(), user);
-//        clientService.saveClient(client);
-//
-//        // Tạo đối tượng Product
-//        Product product = new Product(productDTO.getName()
-//                ,productDTO.getStatus()
-//                ,productDTO.getAcreage()
-//                ,productDTO.getArena()
-//                ,productDTO.getAddress()
-//                ,productDTO.getPrice()
-//                ,LocalDate.now(), client);
-//
-//        // Lưu thông tin sản phẩm vào CSDL
-//        productService.save(product);
-//
-//        return new ResponseEntity<Product>(product, HttpStatus.CREATED);
-//    }
 
     @GetMapping("/upload-success")
     public String showUploadSuccessPage() {

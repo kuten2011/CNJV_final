@@ -36,6 +36,10 @@ public class Product {
         return client;
     }
 
+    public Long getId() {
+        return this.id;
+    }
+
     @Builder
     public Product(String name, int status, Double acreage, String arena, String address, Double price, LocalDate dateCreated, Client client) {
         this.name = name;

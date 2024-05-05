@@ -13,15 +13,23 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Login {
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
     Long id;
     String username;
+    String password;
+    int role;
 
     public String getUsername() {
         return username;
     }
 
-    public Login(String username) {
+    public int getRole() {
+        return this.role;
+    }
+
+    public Login(String username, String password, int role) {
+        this.id = 1l;
         this.username = username;
+        this.password = password;
+        this.role = role;
     }
 }

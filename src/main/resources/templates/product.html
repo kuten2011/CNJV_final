@@ -29,6 +29,10 @@
             padding: 10px;
             border-radius: 5px;
             transition: box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%; /* Chỉnh chiều cao của sản phẩm */
         }
 
         .SPitem:hover {
@@ -39,6 +43,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            flex-grow: 1; /* Để nội dung lấp đầy không gian trong sản phẩm */
         }
 
         .SPhcnimg {
@@ -73,7 +78,6 @@
 
         .SPbutton-container button {
             padding: 10px;
-            background-color: #3498db;
             color: #fff;
             border: none;
             border-radius: 5px;
@@ -82,7 +86,7 @@
         }
 
         .SPbutton-container button:hover {
-            background-color: #2980b9;
+            background-color: #3498db;
         }
 
         .pagination {
@@ -120,21 +124,21 @@
 
 <body>
     <div class="SPbutton-container">
-        <button id="back" onclick="window.history.back();" class="btn btn-dark">Back</button>
-        <button id="addProduct" class="btn btn-dark"><a href="/product/add" style="color: #fff;">Add Product</a></button>
+        <button id="back" onclick="window.history.back();" class="btn btn-success">Back</button>
+        <button id="addProduct" class="btn btn-success"><a href="/product/add" style="color: #fff;">Add Product</a></button>
     </div>
 
     <div class="SPcontainer">
         <div class="SPitem" th:each="product : ${products}">
             <div class="SPhcn">
                 <p class="SPtxt" th:text="${product.name}"></p>
-                <p class="SPtxt2" th:text="${product.arena}"></p>
                 <img class="SPhcnimg" th:src="@{/photo/product/{id}.jpg(id=${product.id})}" alt="Product Image">
+                <p class="SPtxt2" th:text="${product.arena}"></p>
                 <p class="SPgia" th:text="${product.price}"></p>
                 <p class="SPtxt2" th:text="${product.address}"></p>
                 <p class="SPtxt2" th:text="${product.acreage}"></p>
                 <p>
-                    <button class="btn btn-dark"><a th:href="@{/product/{id}(id=${product.id})}" style="color: #fff;">Information</a></button>
+                    <button class="btn btn-success"><a th:href="@{/product/{id}(id=${product.id})}" style="color: #fff;">Information</a></button>
                 </p>
             </div>
         </div>

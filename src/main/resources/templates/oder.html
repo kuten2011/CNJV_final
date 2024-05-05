@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Staff List</title>
+    <title>Order List</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -64,28 +64,68 @@
             color: white;
             border: 1px solid #4CAF50;
         }
+
+        button {
+            background-color: transparent;
+            border: 1px solid #21d411;
+            color: #05f125;
+            cursor: pointer;
+            padding: 8px 16px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            margin: 4px 2px;
+            transition-duration: 0.4s;
+            font-size: 14px;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background-color: #19da29;
+            color: white;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            color: #999;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 
 <body>
-    <h1>Staff List</h1>
+    <h1>Order List</h1>
     <table>
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Name</th>
-                <th>Phone</th>
-                <th>Email</th>
+                <th>Status</th>
+                <th>Acreage</th>
+                <th>Arena</th>
+                <th>Address</th>
+                <th>Price</th>
+                <th>Date Created</th>
+                <th>By Client</th>
+                <th>By Client Phone</th>
+                <th>Oder Status</th>
             </tr>
         </thead>
         <tbody>
-            <tr th:each="staff : ${staffs}">
-                <td th:text="${staff.id}"></td>
-                <td th:text="${staff.name}"></td>
-                <td th:text="${staff.phone}"></td>
-                <td th:text="${staff.email}"></td>
+            <tr th:each="oder : ${oders}">
+                <td class="oderidd" th:text="${oder.id}"></td>
+                <td th:text="${oder.product.name}"></td>
+                <td th:text="${oder.product.status == 0 ? 'Sale' : (oder.product.status == 1 ? 'Rent' : 'Sold out')}"></td>
+                <td th:text="${oder.product.acreage}"></td>
+                <td th:text="${oder.product.arena}"></td>
+                <td th:text="${oder.product.address}"></td>
+                <td th:text="${oder.product.price}"></td>
+                <td th:text="${oder.dateCreate}"></td>
+                <td th:text="${oder.product.client.name}"></td>
+                <td th:text="${oder.product.client.phone}"></td>
+                <td class="status-column" th:text="${oder.status}"></td>
             </tr>
-        </tbody>
+        </tbody>        
     </table>
     <div class="pagination">
         <li>Previous</li>

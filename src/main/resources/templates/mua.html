@@ -49,6 +49,7 @@
     </style>
 </head>
 
+
 <body>
     <div class="container my-5">
         <div class="row" th:each="product : ${products}">
@@ -61,7 +62,7 @@
                 <p class="product-price-sale font-weight-bold text-danger" th:text="${product.price}"></p>
                 <ul class="list-unstyled product-info-details">
                     <li><strong>Acreage:</strong> <span th:text="${product.acreage}"></span></li>
-                    <li><strong>Status:</strong> <span th:text="${product.status == 1 ? 'Thue' : 'Ban'}"></span></li>
+                    <li><strong>Status:</strong> <span th:text="${product.status == 0 ? 'Sale' : (product.status == 1 ? 'Rent' : 'Sold out')}"></span></li>
                     <li><strong>Address:</strong> <span th:text="${product.address}"></span></li>
                     <li><strong>Date Created:</strong> <span th:text="${product.dateCreated}"></span></li>
                 </ul>

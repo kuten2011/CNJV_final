@@ -21,7 +21,7 @@ import CNJV.lab10.jwtutils.JwtFilter;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration {
+public class SecurityConfiguration{
 
     @Autowired
     private UserService userService;
@@ -51,18 +51,15 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder();
     }
 
-//    .requestMatchers(HttpMethod.GET, "/user/index", "/product/sell",
-//            "/product/rent", "product/search-results",
-//            "/admin/client", "/admin/staff", "/admin/user", "/admin/product", "/admin", "/login").permitAll()
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
                 .requestMatchers(HttpMethod.POST,  "/user/api/register", "/login", "/user/api/login", "/test").permitAll()
                 .requestMatchers(HttpMethod.GET, "/login", "/test").permitAll()
-                .requestMatchers( "/index").permitAll()
+//                .requestMatchers( "/index").permitAll()
 //                .requestMatchers("/admin/**").hasRole("ADMIN")
-//                .anyRequest().permitAll()
+                .anyRequest().permitAll()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -76,37 +73,4 @@ public class SecurityConfiguration {
         auth.inMemoryAuthentication()
                 .withUser("admin").password("{noop}123").roles("ADMIN");
     }
-
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        http.csrf().disable()
-//                .authorizeRequests()
-//                .requestMatchers(HttpMethod.POST,  "/user/api/register", "/login", "/user/api/login").permitAll()
-//                .requestMatchers(HttpMethod.GET, "/login").permitAll()
-//                .anyRequest().authenticated()
-//                .and()
-//                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
-//                .and()
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // Thay đổi từ STATELESS thành ALWAYS
-//        // Add a filter to validate the tokens with every request
-//        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-//        return http.build();
-//    }
-
-//        @Override
-//        protected void configure(HttpSecurity http) throws Exception {
-//            http.authorizeRequests()
-//                    .antMatchers("/public/**").permitAll()
-//                    .antMatchers("/admin/**").hasRole("ADMIN")
-//                    .anyRequest().authenticated()
-//                    .and()
-//                    .formLogin().loginPage("/login").permitAll()
-//                    .defaultSuccessUrl("/dashboard") // URL chuyển hướng sau khi đăng nhập thành công
-//                    .and()
-//                    .logout().permitAll();
-//        }
-
-
-
-        // Cấu hình xác thực người dùng và mã hóa mật khẩu
     }

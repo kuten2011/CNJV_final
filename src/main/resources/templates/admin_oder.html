@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product List</title>
+    <title>Order List</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -64,11 +64,37 @@
             color: white;
             border: 1px solid #4CAF50;
         }
+
+        button {
+            background-color: transparent;
+            border: 1px solid #21d411;
+            color: #05f125;
+            cursor: pointer;
+            padding: 8px 16px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            margin: 4px 2px;
+            transition-duration: 0.4s;
+            font-size: 14px;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background-color: #19da29;
+            color: white;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            color: #999;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 
 <body>
-    <h1>Product List</h1>
+    <h1>Order List</h1>
     <table>
         <thead>
             <tr>
@@ -84,15 +110,42 @@
                 <th>By Client Phone</th>
                 <th>Client Buy</th>
                 <th>Phone Client Buy</th>
-                <th>Status</th>
+                <th>Order Status</th>
+                <th>Staff / ID</th>
+                <th>Do</th>
             </tr>
         </thead>
         <tbody>
             <tr th:each="oder : ${oders}">
-                <td th:text="${oder.id}"></td>
+                <td class="oderidd" th:text="${oder.id}"></td>
                 <td th:text="${oder.product.name}"></td>
+                <td th:text="${oder.product.status == 0 ? 'Sale' : (oder.product.status == 1 ? 'Rent' : 'Sold out')}"></td>
+                <td th:text="${oder.product.acreage}"></td>
+                <td th:text="${oder.product.arena}"></td>
+                <td th:text="${oder.product.address}"></td>
+                <td th:text="${oder.product.price}"></td>
+                <td th:text="${oder.dateCreate}"></td>
+                <td th:text="${oder.product.client.name}"></td>
+                <td th:text="${oder.product.client.phone}"></td>
+                <td th:text="${oder.client.name}"></td>
+                <td th:text="${oder.client.phone}"></td>
+                <td class="status-column" th:text="${oder.status}"></td>
+        
+                <!-- Kiểm tra xem nhân viên có tồn tại hay không -->
+                <td th:block th:if="${oder.staff != null}">
+                    <span th:text="${oder.staff.name + '-' + oder.staff.id}"></span>
+                </td>
+                <td th:block th:unless="${oder.staff != null}">
+                    <span>No staff assigned</span>
+                </td>
+        
+                <td>
+                    <button type="button" id="getButton">Get</button>
+                    <button type="button" id="successfulButton">Successful</button>
+                    <button type="button" id="cancelButton">Cancel</button>
+                </td>
             </tr>
-        </tbody>
+        </tbody>        
     </table>
     <div class="pagination">
         <li>Previous</li>
@@ -103,6 +156,49 @@
         <li>5</li>
         <li>Next</li>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var status = document.querySelector(".status-column").textContent.trim();
+            var getButton = document.getElementById("getButton");
+            var successfulButton = document.getElementById("successfulButton");
+            var cancelButton = document.getElementById("cancelButton");
+            var orderId = document.querySelector(".oderidd").textContent.trim(); // Thêm orderId vào JavaScript
+
+            if (status === "Unprocessed") {
+                getButton.disabled = false;
+                successfulButton.disabled = true;
+                cancelButton.disabled = true;
+            } else if (status === "Processing") {
+                getButton.disabled = true;
+                successfulButton.disabled = false;
+                cancelButton.disabled = false;
+            } else {
+                getButton.disabled = true;
+                successfulButton.disabled = true;
+                cancelButton.disabled = true;
+            }
+
+            // Hàm xử lý khi nhấn nút Get
+            function handleGetButton() {
+                window.location.href = '/oder/get/' + orderId;
+            }
+
+            // Hàm xử lý khi nhấn nút Successful
+            function handleSuccessfulButton() {
+                window.location.href = '/oder/success/' + orderId;
+            }
+
+            // Hàm xử lý khi nhấn nút Cancel
+            function handleCancelButton() {
+                window.location.href = '/oder/cancel/' + orderId;
+            }
+
+            // Gán hàm xử lý sự kiện cho các nút
+            getButton.onclick = handleGetButton;
+            successfulButton.onclick = handleSuccessfulButton;
+            cancelButton.onclick = handleCancelButton;
+        });
+    </script>
 </body>
 
 </html>

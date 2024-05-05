@@ -7,28 +7,38 @@
     <style>
         /* style.css */
 
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 0;
+        }
+
         form {
-            margin: 0 auto;
+            margin: 50px auto;
             max-width: 500px;
             background-color: #fff;
-            padding: 50px;
-            border-radius: 12px;
+            padding: 30px;
+            border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         form label {
             display: block;
             margin-bottom: 10px;
+            color: #333;
         }
 
         input[type="text"],
         input[type="email"],
-        input[type="password"] {
-            width: 100%;
+        input[type="password"],
+        input[type="number"] {
+            width: calc(100% - 20px);
             padding: 10px;
             margin-bottom: 20px;
             border: 1px solid #ccc;
             border-radius: 4px;
+            box-sizing: border-box;
         }
 
         button[type="submit"] {
@@ -48,6 +58,7 @@
         h2 {
             text-align: center;
             margin-bottom: 20px;
+            color: #333;
         }
 
         .error-message {
@@ -59,11 +70,12 @@
             display: block;
             text-align: center;
             margin-top: 20px;
+            color: #666;
         }
 
         @media only screen and (max-width: 500px) {
             form {
-                padding: 10px;
+                padding: 20px;
             }
         }
     </style>
